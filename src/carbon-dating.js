@@ -17,9 +17,25 @@ const HALF_LIFE_PERIOD = 5730;
  * dateSample('WOOT!') => false
  *
  */
-function dateSample(/* sampleActivity */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+
+function dateSample(sampleActivity) {
+  if (typeof sampleActivity !== 'string') {
+    sampleActivity = parseFloat(sampleActivity);
+  }
+
+  if (
+    isNaN(sampleActivity) || // Check if the input is a valid number
+    sampleActivity <= 0 || // Check if the activity is greater than zero
+    sampleActivity > MODERN_ACTIVITY || // Check if the activity is within the valid range
+    typeof sampleActivity !== 'number' // Check if the input is a number
+  ) {
+    return false;
+  }
+
+  const k = 0.693 / HALF_LIFE_PERIOD; // Calculate the decay constant
+  const age = Math.log(MODERN_ACTIVITY / sampleActivity) / k; // Calculate the age
+
+  return Math.ceil(age); // Return the estimated age rounded up to the nearest whole number
 }
 
 module.exports = {
